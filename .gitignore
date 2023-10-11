@@ -1,3 +1,3 @@
 .vagrant
-./ubuntu-bionic-18.04-cloudimg-console.log
-./ubuntu/key.pub
+ubuntu-bionic-18.04-cloudimg-console.log
+ubuntu/key.pub
