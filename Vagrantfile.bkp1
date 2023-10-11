@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|  # loads the vagrant API version 2 and assign it to variable named config
+ 
+
+  config.ssh.insert_key = false # Make sure this is set to false
+  #config.ssh.path = "/home/yogesh/D/Yogesh/CICD/project/cicd-vm/key/key.pub"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = 2
+    vb.name = "jenkins"
+  end
+   
+  config.vm.box = "ubuntu/bionic64"  # to deifine base box for our vm
+  config.vm.hostname = "jenkins"
+  config.vm.network "private_network", ip: "192.168.56.111"
+  config.vm.network "forwarded_port", guest: 22, host: 2222, id: "ssh"
+  config.vm.synced_folder".","/vagrant"
+  config.vm.provision "file", source: "ubuntu/key.pub", destination: "/tmp/key.pub"
+  #config.vm.provision "copy_public_key", type: "file", source: "key/key.pub", destination: "/home/ubuntu/.ssh/authorized_keys"
+  config.vm.provision "update_public_key", type: "shell", inline: "cat /tmp/key.pub > /home/ubuntu/.ssh/authorized_keys"
+  config.vm.provision "ansible", playbook: "ansible_config/jenkins/jenkins.yaml"
+  
+  
+end

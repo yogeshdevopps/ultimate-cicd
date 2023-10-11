@@ -1,0 +1,1 @@
+kubeadm join 172.31.43.62:6443 --token nyyupc.bh7egobjczapvabt --discovery-token-ca-cert-hash sha256:bccd028605cfd921136f794856c38ee2c83f992af377d171511920aa302c3aaa

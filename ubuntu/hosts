@@ -1,0 +1,13 @@
+# Standard host addresses
+127.0.0.1  localhost
+::1        localhost ip6-localhost ip6-loopback
+ff02::1    ip6-allnodes
+ff02::2    ip6-allrouters
+# This host address
+127.0.1.1  thinkpad
+
+192.168.56.111 jenkins
+192.168.56.112 k8s-master
+192.168.56.113 nexus
+192.168.56.114 sonar
+192.168.56.115 node1
