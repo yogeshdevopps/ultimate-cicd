@@ -1,0 +1,15 @@
+---
+- name: Deploy common packages
+  hosts: worker
+  become: true
+  roles:
+    - commons
+    - configure-kernel
+    - containerd
+
+# ==== Play to setup and configure k8s worker nodes ==========
+- name: Join cluster
+  hosts: worker
+  become: true
+  roles:
+    - worker-setup

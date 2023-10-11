@@ -1,8 +1,6 @@
 ---
 - name: Deploy common packages
-  hosts:
-    - master
-    - worker
+  hosts: master
   become: true
   roles:
     - commons
@@ -16,10 +14,3 @@
   roles:
     - cluster-setup
   tags: master_check
-
-# ==== Play to setup and configure k8s worker nodes ==========
-- name: Join cluster
-  hosts: worker
-  become: true
-  roles:
-    - worker-setup
