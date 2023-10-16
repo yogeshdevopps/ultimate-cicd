@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
         end
         jenkins.vm.hostname = "jenkins"
         jenkins.vm.network :private_network, ip: IP_NW + "#{IP + i}"
-        jenkins.vm.network "forwarded_port", guest: 22, host: "#{2710 + i}"
+        jenkins.vm.network "forwarded_port", guest: 22, host: "#{2760 + i}"
 
 #        jenkins.vm.provision "copy_public_key", type: "file", source: "ubuntu/key.pub", destination: "/home/ubuntu/.ssh/authorized_keys"
         jenkins.vm.provision "file", source: "ubuntu/key.pub", destination: "/tmp/key.pub"
@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
   end
   # Provision k8s server
   (1..K8S_NODE).each do |i|
-      config.vm.define "k8s" do |k8s|
+      config.vm.define "k8s-master" do |k8s|
         # Name shown in the GUI
         k8s.vm.provider "virtualbox" do |vb|
             vb.name = "k8s-master"
@@ -56,8 +56,8 @@ Vagrant.configure("2") do |config|
 
 #        jenkins.vm.provision "copy_public_key", type: "file", source: "ubuntu/key.pub", destination: "/home/ubuntu/.ssh/authorized_keys"
         k8s.vm.provision "file", source: "ubuntu/key.pub", destination: "/tmp/key.pub"
-        k8s.vm.provision  "update_public_key", type: "shell", inline: "cat /tmp/key.pub > /home/ubuntu/.ssh/authorized_keys"
- #       k8s.vm.provision "ansible", playbook: "ansible_config/jenkins/jenkins.yaml", inventory_path: "ansible_config/inventory.ini"
+        k8s.vm.provision "update_public_key", type: "shell", inline: "cat /tmp/key.pub > /home/ubuntu/.ssh/authorized_keys"
+        k8s.vm.provision "ansible", playbook: "ansible_config/K8S-Cluster/setup-master.yaml", inventory_path: "ansible_config/inventory.ini"
 
       end
   end
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
         # Name shown in the GUI
         nexus.vm.provider "virtualbox" do |vb|
             vb.name = "nexus"
-            vb.memory = 2048
+            vb.memory = 4096
             vb.cpus = 2
         end
         nexus.vm.hostname = "nexus"
@@ -90,7 +90,6 @@ Vagrant.configure("2") do |config|
         sonar.vm.provider "virtualbox" do |vb|
             vb.name = "sonar"
             vb.memory = 2048
-            vb.cpus = 2
         end
         sonar.vm.hostname = "sonar"
         sonar.vm.network :private_network, ip: IP_NW + "#{IP + 4}"
@@ -122,7 +121,7 @@ Vagrant.configure("2") do |config|
         node1.vm.provision  "update_public_key", type: "shell", inline: "cat /tmp/key.pub > /home/ubuntu/.ssh/authorized_keys"
         node1.vm.provision "file", source: "ubuntu/hosts", destination: "/tmp/hosts"
         node1.vm.provision  "update_host_file", type: "shell", inline: "cat /tmp/hosts > /etc/hosts"
- #       nexus.vm.provision "ansible", playbook: "ansible_config/nexus/nexus.yaml", inventory_path: "ansible_config/inventory.ini"
+        node1.vm.provision "ansible", playbook: "ansible_config/K8S-Cluster/setup-worker.yaml", inventory_path: "ansible_config/inventory.ini"
 
       end
   end

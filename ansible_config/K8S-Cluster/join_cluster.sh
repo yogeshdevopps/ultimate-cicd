@@ -1,1 +1,1 @@
-kubeadm join 192.168.56.111:6443 --token m1f5x7.v4hlnju75ulmrr9d --discovery-token-ca-cert-hash sha256:c18ddf193f8093710bdc6663bdacadce46a43253481a02f1a6f431a2b2498b89 
+kubeadm join 192.168.56.112:6443 --token yrgflk.3l66g91dz8a8ie2a --discovery-token-ca-cert-hash sha256:dc3a71f9453d1d9edd046e84da7e33f78e191220e8219a74217a28ed79c10d60 
